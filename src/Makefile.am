@@ -111,6 +111,7 @@ LIBSNOWGEM_H = \
 BITCOIN_CORE_H = \
   addressindex.h \
   spentindex.h \
+  activemasternode.h \
   addrman.h \
   alert.h \
   amount.h \
@@ -143,17 +144,26 @@ BITCOIN_CORE_H = \
   consensus/validation.h \
   core_io.h \
   core_memusage.h \
+  obfuscation.h \
+  obfuscation-relay.h \
   deprecation.h \
   hash.h \
   httprpc.h \
   httpserver.h \
   init.h \
+  swifttx.h \
   key.h \
   keystore.h \
   leveldbwrapper.h \
   limitedmap.h \
   main.h \
   memusage.h \
+  masternode.h \
+  masternode-payments.h \
+  masternode-budget.h \
+  masternode-sync.h \
+  masternodeman.h \
+  masternodeconfig.h \
   merkleblock.h \
   metrics.h \
   miner.h \
@@ -182,6 +192,8 @@ BITCOIN_CORE_H = \
   script/sign.h \
   script/standard.h \
   serialize.h \
+  spork.h \
+  sporkdb.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
@@ -254,12 +266,15 @@ libbitcoin_server_a_SOURCES = \
   pow.cpp \
   rest.cpp \
   rpcblockchain.cpp \
+  rpcmasternode.cpp \
+  rpcmasternode-budget.cpp \
   rpcmining.cpp \
   rpcmisc.cpp \
   rpcnet.cpp \
   rpcrawtransaction.cpp \
   rpcserver.cpp \
   script/sigcache.cpp \
+  sporkdb.cpp \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \
@@ -294,6 +309,9 @@ endif
 libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_wallet_a_SOURCES = \
+  activemasternode.cpp \
+  obfuscation.cpp \
+  obfuscation-relay.cpp \
   utiltest.cpp \
   utiltest.h \
   zcbenchmarks.cpp \
@@ -302,6 +320,13 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/asyncrpcoperation_shieldcoinbase.cpp \
   wallet/crypter.cpp \
   wallet/db.cpp \
+  swifttx.cpp \
+  masternode.cpp \
+  masternode-budget.cpp \
+  masternode-payments.cpp \
+  masternode-sync.cpp \
+  masternodeconfig.cpp \
+  masternodeman.cpp \
   paymentdisclosure.cpp \
   paymentdisclosuredb.cpp \
   wallet/rpcdisclosure.cpp \
@@ -372,6 +397,8 @@ libbitcoin_common_a_SOURCES = \
   script/script_error.cpp \
   script/sign.cpp \
   script/standard.cpp \
+  spork.cpp \
+  sporkdb.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSNOWGEM_H)
 

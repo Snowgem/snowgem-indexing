@@ -231,6 +231,9 @@ void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
     }
     entry.push_back(Pair("vout", vout));
 
+    UniValue vjoinsplit = TxJoinSplitToJSON(tx);
+    entry.push_back(Pair("vjoinsplit", vjoinsplit));
+
     if (!hashBlock.IsNull()) {
         entry.push_back(Pair("blockhash", hashBlock.GetHex()));
         BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
@@ -342,6 +345,8 @@ UniValue getrawtransaction(const UniValue& params, bool fHelp)
             + HelpExampleRpc("getrawtransaction", "\"mytxid\", 1")
         );
 
+    LOCK(cs_main);
+
     uint256 hash = ParseHashV(params[0], "parameter 1");
 
     bool fVerbose = false;
@@ -381,8 +386,7 @@ UniValue getrawtransaction(const UniValue& params, bool fHelp)
 
     UniValue result(UniValue::VOBJ);
     result.push_back(Pair("hex", strHex));
-    TxToJSONExpanded(tx, hashBlock, result, nHeight, nConfirmations, nBlockTime);
-
+    TxToJSON(tx, hashBlock, result);
     return result;
 }
 

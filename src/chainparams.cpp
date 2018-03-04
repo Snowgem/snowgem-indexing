@@ -81,6 +81,9 @@ public:
         consensus.nMajorityWindow = 4000;
         consensus.powLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowAveragingWindow = 17;
+        consensus.nMasternodePaymentsStartBlock = 193200;
+        consensus.nMasternodePaymentsIncreasePeriod = 43200; // 1 month
+
         assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 32; // 32% adjustment down
         consensus.nPowMaxAdjustUp = 16; // 16% adjustment up
@@ -100,6 +103,7 @@ public:
         BOOST_STATIC_ASSERT(equihash_parameters_acceptable(N, K));
         nEquihashN = N;
         nEquihashK = K;
+        nMasternodeCountDrift = 0;
 
         genesis = CreateGenesisBlock(
             1511111234,
@@ -141,7 +145,7 @@ public:
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
         fTestnetToBeDeprecatedFieldRPC = false;
-
+		fHeadersFirstSyncingActive = false;
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
             (0, consensus.hashGenesisBlock)
@@ -177,6 +181,12 @@ public:
             "s3UpY6Q3T3v3F7MEpNDnV3rTucLEJkkHR4q", /* main-index: 18*/
             "s3eWx3DcwLiusTBfhWu6z7zM4TffaV1Ng9r", /* main-index: 19*/
 };
+        nPoolMaxTransactions = 3;
+        strSporkKey = "045da9271f5d9df405d9e83c7c7e62e9c831cc85c51ffaa6b515c4f9c845dec4bf256460003f26ba9d394a17cb57e6759fe231eca75b801c20bccd19cbe4b7942d";
+
+        strObfuscationPoolDummyAddress = "s1eQnJdoWDhKhxDrX8ev3aFjb1J6ZwXCxUT";
+        nStartMasternodePayments = 1523750400; //2018-04-15
+        nBudget_Fee_Confirmations = 6; // Number of confirmations for the finalization fee
         assert(vFoundersRewardAddress.size() <= consensus.GetLastFoundersRewardBlockHeight());
     }
 };
@@ -202,6 +212,8 @@ public:
         consensus.nPowMaxAdjustDown = 32; // 32% adjustment down
         consensus.nPowMaxAdjustUp = 16; // 16% adjustment up
         consensus.nPowTargetSpacing = 1 * 60;
+        consensus.nMasternodePaymentsStartBlock = 1500;
+        consensus.nMasternodePaymentsIncreasePeriod = 200;
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0x1a;
         pchMessageStart[2] = 0xf9;
@@ -264,9 +276,11 @@ public:
 
         // Founders reward script expects a vector of 2-of-3 multisig addresses
         vFoundersRewardAddress = {
-            "t2Mx4gGgN1N8Ebd9HASzdG7C9RVtjx7rb2j"
+            "t2UNzUUx8mWBCRYPRezvA363EYXyEpHokyi"
             };
         assert(vFoundersRewardAddress.size() <= consensus.GetLastFoundersRewardBlockHeight());
+		
+		nStartMasternodePayments = 1520121600; //2018-03-04
     }
 };
 static CTestNetParams testNetParams;
