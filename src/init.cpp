@@ -1223,9 +1223,12 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                 }
 
                 LogPrintf("Backing up wallet %s to %s\n", walletFile, walletFile + ".bak." + currDate);
-                boost::filesystem::copy_file(walletFile,
-                    walletFile + ".bak." + currDate,
-                    boost::filesystem::copy_option::overwrite_if_exists);
+                if(boost::filesystem::exists(walletFile))
+                {
+                    boost::filesystem::copy_file(walletFile,
+                        walletFile + ".bak." + currDate,
+                        boost::filesystem::copy_option::overwrite_if_exists);
+                }
             }
         }
 
@@ -1458,7 +1461,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                 }
 
 				// SnowGem: load previous sessions sporks if we have them.
-                uiInterface.InitMessage(_("Loading sporks..."));
+                // uiInterface.InitMessage(_("Loading sporks..."));
                 LoadSporksFromDB();
 				
                 if (!LoadBlockIndex()) {

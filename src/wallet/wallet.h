@@ -84,7 +84,7 @@ enum AvailableCoinsType {
     ALL_COINS = 1,
     ONLY_DENOMINATED = 2,
     ONLY_NOT10000IFMN = 3,
-    ONLY_NONDENOMINATED_NOT10000IFMN = 4, // ONLY_NONDENOMINATED and not 10000 SNG at the same time
+    ONLY_NONDENOMINATED_NOT10000IFMN = 4, // ONLY_NONDENOMINATED and not 10000 XSG at the same time
     ONLY_10000 = 5                        // find masternode outputs including locked ones (use with caution)
 };
 
@@ -172,7 +172,11 @@ public:
     // Transaction hash
     uint256 hash;
     // Index into CTransaction.vjoinsplit
+    #ifdef __LP64__ // required to build on MacOS due to size_t ambiguity errors
+    uint64_t js;
+    #else
     size_t js;
+    #endif
     // Index into JSDescription fields of length ZC_NUM_JS_OUTPUTS
     uint8_t n;
 
